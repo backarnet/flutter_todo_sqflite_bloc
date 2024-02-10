@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sqflite_practice/bloc/bloc/crud_bloc.dart';
-import 'package:sqflite_practice/page/add_todo.dart';
-import 'package:sqflite_practice/splash_screen/splash_screen.dart';
 
+import 'bloc/crud_bloc.dart';
+import 'page/add_todo.dart';
 import 'page/details_page.dart';
+import 'splash_screen/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());

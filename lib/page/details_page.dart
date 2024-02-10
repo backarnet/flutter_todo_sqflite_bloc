@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:sqflite_practice/bloc/bloc/crud_bloc.dart';
+
+import '../bloc/crud_bloc.dart';
 import '../constants/constants.dart';
 import '../models/todo.dart';
 import '../widgets/custom_text.dart';
