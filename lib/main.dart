@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_todo_sqflite_bloc/cubit/crud_cubit.dart';
 
-import 'bloc/crud_bloc.dart';
 import 'pages/add_todo.dart';
 import 'pages/home_page.dart';
 import 'pages/splash_screen.dart';
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => CrudBloc()),
+        BlocProvider(create: (context) => CrudCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/crud_bloc.dart';
+import '../cubit/crud_cubit.dart';
+import '../models/todo.dart';
 import '../widgets/custom_text.dart';
 
 class AddTodoPage extends StatefulWidget {
@@ -46,14 +47,14 @@ class _AddTodoPageState extends State<AddTodoPage> {
                   });
                 },
               ),
-              BlocBuilder<CrudBloc, CrudState>(
+              BlocBuilder<CrudCubit, CrudState>(
                 builder: (context, state) {
                   return ElevatedButton(
                       onPressed: () {
                         if (_title.text.isNotEmpty &&
                             _description.text.isNotEmpty) {
-                          context.read<CrudBloc>().add(
-                                AddTodo(
+                          context.read<CrudCubit>().add(
+                                Todo(
                                   title: _title.text,
                                   isImportant: toggleSwitch,
                                   number: 0,
@@ -66,7 +67,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
                             duration: Duration(seconds: 1),
                             content: Text("todo added successfully"),
                           ));
-                          context.read<CrudBloc>().add(const FetchTodos());
+                          context.read<CrudCubit>().readAll();
                           Navigator.pop(context);
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(

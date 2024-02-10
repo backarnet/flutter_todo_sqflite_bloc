@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../bloc/crud_bloc.dart';
-import '../constants/constants.dart';
+import '../cubit/crud_cubit.dart';
+import '../constants.dart';
 import '../models/todo.dart';
 import '../widgets/custom_text.dart';
 
@@ -30,7 +30,7 @@ class _DetailsPageState extends State<DetailsPage> {
             Icons.arrow_back,
           ),
           onPressed: () {
-            context.read<CrudBloc>().add(const FetchTodos());
+            context.read<CrudCubit>().readAll();
             Navigator.pop(context);
           },
         ),
@@ -38,7 +38,7 @@ class _DetailsPageState extends State<DetailsPage> {
       body: Container(
         padding: const EdgeInsets.all(8),
         height: MediaQuery.of(context).size.height,
-        child: BlocBuilder<CrudBloc, CrudState>(
+        child: BlocBuilder<CrudCubit, CrudState>(
           builder: (context, state) {
             if (state is DisplaySpecificTodo) {
               Todo currentTodo = state.todo;
@@ -140,17 +140,15 @@ class _DetailsPageState extends State<DetailsPage> {
                                       ElevatedButton(
                                         style: Constants.customButtonStyle,
                                         onPressed: () async {
-                                          context.read<CrudBloc>().add(
-                                                UpdateTodo(
-                                                  todo: Todo(
-                                                    id: currentTodo.id,
-                                                    createdTime: DateTime.now(),
-                                                    description:
-                                                        _newDescription.text,
-                                                    isImportant: toggleSwitch,
-                                                    number: currentTodo.number,
-                                                    title: _newTitle.text,
-                                                  ),
+                                          context.read<CrudCubit>().update(
+                                                Todo(
+                                                  id: currentTodo.id,
+                                                  createdTime: DateTime.now(),
+                                                  description:
+                                                      _newDescription.text,
+                                                  isImportant: toggleSwitch,
+                                                  number: currentTodo.number,
+                                                  title: _newTitle.text,
                                                 ),
                                               );
                                           ScaffoldMessenger.of(context)
@@ -163,9 +161,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                           ));
                                           Navigator.of(context).popUntil(
                                               (route) => route.isFirst);
-                                          context
-                                              .read<CrudBloc>()
-                                              .add(const FetchTodos());
+                                          context.read<CrudCubit>().readAll();
                                         },
                                         child: const Text('Update'),
                                       ),

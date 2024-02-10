@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/crud_bloc.dart';
+import '../cubit/crud_cubit.dart';
 import 'details_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -9,10 +9,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CrudBloc, CrudState>(
+    return BlocBuilder<CrudCubit, CrudState>(
       builder: (context, state) {
         if (state is CrudInitial) {
-          context.read<CrudBloc>().add(const FetchTodos());
+          context.read<CrudCubit>().readAll();
         }
         if (state is DisplayTodos) {
           return SafeArea(
@@ -29,17 +29,18 @@ class HomePage extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                state.todo.isNotEmpty
+                state.todos.isNotEmpty
                     ? Expanded(
                         child: ListView.builder(
                           scrollDirection: Axis.vertical,
                           padding: const EdgeInsets.all(8),
-                          itemCount: state.todo.length,
+                          itemCount: state.todos.length,
                           itemBuilder: (context, i) {
                             return GestureDetector(
                               onTap: () {
-                                context.read<CrudBloc>().add(
-                                    FetchSpecificTodo(id: state.todo[i].id!));
+                                context
+                                    .read<CrudCubit>()
+                                    .readById(state.todos[i].id!);
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -57,7 +58,7 @@ class HomePage extends StatelessWidget {
                                     children: [
                                       ListTile(
                                         title: Text(
-                                          state.todo[i].title.toUpperCase(),
+                                          state.todos[i].title.toUpperCase(),
                                           style: const TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold),
@@ -67,10 +68,10 @@ class HomePage extends StatelessWidget {
                                           children: [
                                             IconButton(
                                                 onPressed: () {
-                                                  context.read<CrudBloc>().add(
-                                                      DeleteTodo(
-                                                          id: state
-                                                              .todo[i].id!));
+                                                  context
+                                                      .read<CrudCubit>()
+                                                      .delete(
+                                                          state.todos[i].id!);
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(
                                                           const SnackBar(
