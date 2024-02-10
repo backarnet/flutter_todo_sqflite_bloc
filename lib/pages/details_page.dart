@@ -7,16 +7,17 @@ import '../constants/constants.dart';
 import '../models/todo.dart';
 import '../widgets/custom_text.dart';
 
+final TextEditingController _newTitle = TextEditingController();
+final TextEditingController _newDescription = TextEditingController();
+
 class DetailsPage extends StatefulWidget {
-  const DetailsPage({Key? key}) : super(key: key);
+  const DetailsPage({super.key});
 
   @override
   State<DetailsPage> createState() => _DetailsPageState();
 }
 
 class _DetailsPageState extends State<DetailsPage> {
-  final TextEditingController _newTitle = TextEditingController();
-  final TextEditingController _newDescription = TextEditingController();
   bool toggleSwitch = false;
 
   @override

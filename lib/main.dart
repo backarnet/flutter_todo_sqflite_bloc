@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/crud_bloc.dart';
-import 'page/add_todo.dart';
-import 'page/details_page.dart';
-import 'splash_screen/splash_screen.dart';
+import 'pages/add_todo.dart';
+import 'pages/home_page.dart';
+import 'pages/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          colorSchemeSeed: Colors.blue,
         ),
         home: const SplashScreen(),
       ),
@@ -31,14 +31,9 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class SqFliteDemo extends StatefulWidget {
-  const SqFliteDemo({Key? key}) : super(key: key);
+class SqFliteDemo extends StatelessWidget {
+  const SqFliteDemo({super.key});
 
-  @override
-  State<SqFliteDemo> createState() => _SqFliteDemoState();
-}
-
-class _SqFliteDemoState extends State<SqFliteDemo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,106 +51,7 @@ class _SqFliteDemoState extends State<SqFliteDemo> {
               context, MaterialPageRoute(builder: (c) => const AddTodoPage()));
         },
       ),
-      body: BlocBuilder<CrudBloc, CrudState>(
-        builder: (context, state) {
-          if (state is CrudInitial) {
-            context.read<CrudBloc>().add(const FetchTodos());
-          }
-          if (state is DisplayTodos) {
-            return SafeArea(
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                height: MediaQuery.of(context).size.height,
-                child: Column(children: [
-                  Center(
-                    child: Text(
-                      'Add a Todo'.toUpperCase(),
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  state.todo.isNotEmpty
-                      ? Expanded(
-                          child: ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            padding: const EdgeInsets.all(8),
-                            itemCount: state.todo.length,
-                            itemBuilder: (context, i) {
-                              return GestureDetector(
-                                onTap: () {
-                                  context.read<CrudBloc>().add(
-                                      FetchSpecificTodo(id: state.todo[i].id!));
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: ((context) =>
-                                          const DetailsPage()),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  height: 80,
-                                  margin: const EdgeInsets.only(bottom: 14),
-                                  child: Card(
-                                    elevation: 10,
-                                    color: Colors.blue,
-                                    child: Column(
-                                      children: [
-                                        ListTile(
-                                          title: Text(
-                                            state.todo[i].title.toUpperCase(),
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          trailing: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              IconButton(
-                                                  onPressed: () {
-                                                    context
-                                                        .read<CrudBloc>()
-                                                        .add(DeleteTodo(
-                                                            id: state
-                                                                .todo[i].id!));
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(
-                                                            const SnackBar(
-                                                      duration: Duration(
-                                                          milliseconds: 500),
-                                                      content:
-                                                          Text("deleted todo"),
-                                                    ));
-                                                  },
-                                                  icon: const Icon(
-                                                    Icons.delete,
-                                                    color: Colors.red,
-                                                  ))
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        )
-                      : const Text(''),
-                ]),
-              ),
-            );
-          }
-          return Container(
-            color: Colors.white,
-            child: const Center(child: CircularProgressIndicator()),
-          );
-        },
-      ),
+      body: const HomePage(),
     );
   }
 }

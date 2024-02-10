@@ -29,15 +29,15 @@ class DatabaseService {
     // const integerType = 'INTEGER NOT NULL';
 
     await db.execute('''
-CREATE TABLE todos ( 
-  _id INTEGER PRIMARY KEY AUTOINCREMENT, 
-  isImportant BOOLEAN NOT NULL,
-  number INTEGER NOT NULL,
-  title TEXT NOT NULL,
-  description NOT NULL,
-  time NOT NULL
-  )
-''');
+      CREATE TABLE todos (
+        _id INTEGER PRIMARY KEY AUTOINCREMENT, 
+        isImportant BOOLEAN NOT NULL,
+        number INTEGER NOT NULL,
+        title TEXT NOT NULL,
+        description NOT NULL,
+        time NOT NULL
+      )
+      ''');
   }
 
   Future<Todo> create(Todo todo) async {
